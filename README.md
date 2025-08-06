@@ -1,6 +1,6 @@
 # Aircraft Patterns - Pattern Detection for ADS-B/TAR1090
 
-[![Deploy](https://github.com/challgren/aircraft-patterns/actions/workflows/deploy.yml/badge.svg)](https://github.com/challgren/aircraft-patterns/actions/workflows/deploy.yml)
+[![Build Status](https://github.com/challgren/aircraft-patterns/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/challgren/aircraft-patterns/actions/workflows/deploy.yml)
 [![Security Scan](https://github.com/challgren/aircraft-patterns/actions/workflows/security.yml/badge.svg)](https://github.com/challgren/aircraft-patterns/actions/workflows/security.yml)
 [![Python Lint](https://github.com/challgren/aircraft-patterns/actions/workflows/python-lint.yml/badge.svg)](https://github.com/challgren/aircraft-patterns/actions/workflows/python-lint.yml)
 [![Docker Image](https://ghcr-badge.egpl.dev/challgren/aircraft-patterns/size?tag=latest&label=image%20size)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
