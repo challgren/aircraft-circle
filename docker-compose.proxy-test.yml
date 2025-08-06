@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Nginx reverse proxy to simulate your setup
+  nginx-proxy:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx-test.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - aircraft-circle
+    networks:
+      - proxy-network
+
+  aircraft-circle:
+    image: aircraft-circle:path-fix
+    environment:
+      - TAR1090_URL=http://fr24.hallgren.net:8080
+      - WEB_PORT=8888
+      - ENABLE_WEB=true
+    volumes:
+      - /tmp/aircraft-test-data:/app/data
+    expose:
+      - "8888"
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    driver: bridge
