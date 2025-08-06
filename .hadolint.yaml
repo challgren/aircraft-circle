@@ -1,0 +1,11 @@
+ignored:
+  - DL3008  # Pin versions in apt get install
+  - DL3009  # Delete the apt-get lists after installing
+  - SC1091  # Not following sourced files
+  - SC2086  # Double quote to prevent globbing
+  - SC2039  # In POSIX sh, something is undefined
+  - SC2181  # Check exit code directly
+
+trustedRegistries:
+  - ghcr.io
+  - docker.io

@@ -1,0 +1,44 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+# Set defaults if not provided
+TAR1090_URL="${TAR1090_URL:-http://tar1090:80}"
+WEB_PORT="${WEB_PORT:-8888}"
+ENABLE_WEB="${ENABLE_WEB:-true}"
+MIN_RADIUS="${MIN_RADIUS:-0.5}"
+MAX_RADIUS="${MAX_RADIUS:-10}"
+MIN_TURNS="${MIN_TURNS:-1.5}"
+MIN_GRID_LEGS="${MIN_GRID_LEGS:-3}"
+MIN_LEG_LENGTH="${MIN_LEG_LENGTH:-2.0}"
+COMPACT_MODE="${COMPACT_MODE:-false}"
+QUIET_MODE="${QUIET_MODE:-false}"
+UPDATE_INTERVAL="${UPDATE_INTERVAL:-5}"
+
+# Build command arguments
+ARGS="--server ${TAR1090_URL}"
+ARGS="${ARGS} --min-radius ${MIN_RADIUS}"
+ARGS="${ARGS} --max-radius ${MAX_RADIUS}"
+ARGS="${ARGS} --min-turns ${MIN_TURNS}"
+ARGS="${ARGS} --min-grid-legs ${MIN_GRID_LEGS}"
+ARGS="${ARGS} --min-leg-length ${MIN_LEG_LENGTH}"
+
+if [[ "${ENABLE_WEB}" == "true" ]]; then
+    ARGS="${ARGS} --web --web-port ${WEB_PORT}"
+fi
+
+if [[ "${COMPACT_MODE}" == "true" ]]; then
+    ARGS="${ARGS} --compact"
+fi
+
+if [[ "${QUIET_MODE}" == "true" ]]; then
+    ARGS="${ARGS} --quiet"
+fi
+
+# Log startup
+echo "Starting Aircraft Circle Detector..."
+echo "TAR1090 URL: ${TAR1090_URL}"
+echo "Web interface: ${ENABLE_WEB} (port ${WEB_PORT})"
+
+# Run the application
+cd /app || exit 1
+exec s6-setuidgid abc python3 app.py ${ARGS}
