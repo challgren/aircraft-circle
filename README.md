@@ -127,6 +127,33 @@ Access at: `http://localhost:8888`
 Access at: `http://localhost:8888/history`
 
 - Browse all historical pattern detections
+
+### Reverse Proxy Support
+
+The application works seamlessly behind reverse proxies like `ghcr.io/sdr-enthusiasts/docker-reversewebproxy`. The Flask application automatically handles:
+
+- `X-Forwarded-For` - Client IP addresses
+- `X-Forwarded-Proto` - HTTP/HTTPS protocol
+- `X-Forwarded-Host` - Original hostname
+- `X-Forwarded-Prefix` - URL path prefix
+
+Example reverse proxy configuration:
+
+```yaml
+services:
+  reversewebproxy:
+    image: ghcr.io/sdr-enthusiasts/docker-reversewebproxy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - PROXY_HOSTS=aircraft,aircraft-circle,8888
+
+  aircraft-circle:
+    image: ghcr.io/challgren/aircraft-circle:latest
+    environment:
+      - TAR1090_URL=http://tar1090:80
+```
 - Filter by date range, pattern type, and callsign
 - Visual timeline of detection activity
 - Direct links to TAR1090 replay for each pattern

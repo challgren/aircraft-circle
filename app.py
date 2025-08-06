@@ -1380,6 +1380,7 @@ import os
 import shutil
 from flask import Flask, render_template_string, jsonify
 from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 import webbrowser
 
 
@@ -2510,6 +2511,17 @@ class TAR1090Monitor:
             static_folder = None
             
         app = Flask(__name__, static_folder=static_folder)
+        
+        # Configure for reverse proxy - handles X-Forwarded-* headers
+        # This allows the app to work correctly behind docker-reversewebproxy
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app,
+            x_for=1,      # Trust X-Forwarded-For header for client IP
+            x_proto=1,    # Trust X-Forwarded-Proto for HTTP/HTTPS
+            x_host=1,     # Trust X-Forwarded-Host for original host
+            x_prefix=1    # Trust X-Forwarded-Prefix for URL prefix
+        )
+        
         CORS(app)
         self.web_app = app
         
