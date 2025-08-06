@@ -13,6 +13,7 @@
 Real-time aircraft pattern detection system that monitors TAR1090 feeds to identify and log circular holding patterns, training flights, and grid survey patterns.
 
 ![Aircraft Pattern Detector Screenshot](docs/images/screenshot.png)
+
 ## 🎯 Features
 
 ### Pattern Detection
