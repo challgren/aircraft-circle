@@ -2744,6 +2744,12 @@ class TAR1090Monitor:
                                 # The CSV uses different column names than what we expect
                                 # Handle timestamp - use it for detected_at, and add 1 minute for last_seen if not separate
                                 timestamp = row.get('timestamp', row.get('detected_at', ''))
+                                
+                                # Skip entries with invalid or missing timestamps
+                                if not timestamp:
+                                    print(f"Skipping circle entry with no timestamp: {row}")
+                                    continue
+                                    
                                 last_seen = row.get('last_seen', '')
                                 if not last_seen or last_seen == timestamp:
                                     # Add a small duration if last_seen is not available
@@ -2783,6 +2789,12 @@ class TAR1090Monitor:
                                 # Map CSV columns to expected fields
                                 # Handle timestamp - use it for detected_at, and add 1 minute for last_seen if not separate
                                 timestamp = row.get('timestamp', row.get('detected_at', ''))
+                                
+                                # Skip entries with invalid or missing timestamps
+                                if not timestamp:
+                                    print(f"Skipping grid entry with no timestamp: {row}")
+                                    continue
+                                    
                                 last_seen = row.get('last_seen', '')
                                 if not last_seen or last_seen == timestamp:
                                     # Add a small duration if last_seen is not available
