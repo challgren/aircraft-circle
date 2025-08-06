@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   aircraft-circle:
     image: ghcr.io/challgren/aircraft-circle:latest
