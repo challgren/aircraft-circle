@@ -59,12 +59,14 @@ docker-compose -f docker-compose.proxy-test.yml up
 ### CI/CD and Linting
 
 The project uses GitHub Actions for automated checks:
+
 - **hadolint** - Dockerfile linting
 - **shellcheck** - Shell script validation  
 - **markdownlint** - Markdown formatting
 - **deploy** - Multi-arch build and push to GHCR on main branch changes
 
 To run linters locally:
+
 ```bash
 hadolint Dockerfile
 shellcheck rootfs/**/*.sh
@@ -76,6 +78,7 @@ markdownlint *.md
 ### S6-Overlay Service
 
 The s6 service configuration is critical for Docker container operation:
+
 - Run script must use `#!/command/with-contenv bash` (not `/usr/bin/with-contenv`)
 - Service runs as root (no `abc` user in base image)
 - Located at `/etc/s6-overlay/s6-rc.d/aircraft-circle/run`
@@ -83,6 +86,7 @@ The s6 service configuration is critical for Docker container operation:
 ### Reverse Proxy Support
 
 The application supports mounting at subpaths (e.g., `/circles/`):
+
 - JavaScript dynamically detects base URL from `window.location.pathname`
 - All navigation uses relative links (`./`, `history` not `/`, `/history`)
 - API calls use computed `baseUrl + '/api/...'`
@@ -91,6 +95,7 @@ The application supports mounting at subpaths (e.g., `/circles/`):
 ### Pattern Detection Parameters
 
 Key thresholds that affect detection sensitivity:
+
 - Circle: MIN_RADIUS=0.5km, MAX_RADIUS=10km, MIN_TURNS=1.5
 - Grid: MIN_GRID_LEGS=3, MIN_LEG_LENGTH=2.0km
 - Data quality: max_speed_kmh=1000, max_position_jump_km=5.0
@@ -106,6 +111,7 @@ Key thresholds that affect detection sensitivity:
 ### CSV Data Files
 
 Pattern detections are logged to:
+
 - `/app/circle_detections.csv` - Circular patterns
 - `/app/grid_detections.csv` - Grid patterns
 
@@ -124,6 +130,7 @@ Each entry includes timestamp, aircraft info, pattern parameters, and TAR1090 re
 ## Testing TAR1090 Connection
 
 The application expects TAR1090 API format:
+
 ```bash
 curl http://your-tar1090/data/aircraft.json
 ```
