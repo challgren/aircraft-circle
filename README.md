@@ -11,12 +11,14 @@ Real-time aircraft pattern detection system that monitors TAR1090 feeds to ident
 ## 🎯 Features
 
 ### Pattern Detection
+
 - **Circle Detection**: Identifies aircraft flying in circular patterns (training, holding, orbits)
 - **Grid Detection**: Detects survey/search grid patterns, mapping flights, and search & rescue operations
 - **Real-time Monitoring**: Continuously analyzes aircraft movements from TAR1090 data feeds
 - **Historical Tracking**: Maintains comprehensive logs of all detected patterns with TAR1090 replay links
 
 ### Web Interface
+
 - **Live Map View**: Real-time visualization of aircraft and detected patterns
 - **TAR1090-style Icons**: Aircraft displayed with type-appropriate icons and altitude-based coloring
 - **Track History**: Flight path visualization with altitude-based color coding
@@ -24,6 +26,7 @@ Real-time aircraft pattern detection system that monitors TAR1090 feeds to ident
 - **Interactive Controls**: Toggle aircraft display, tracks, and pattern overlays
 
 ### Data & Integration
+
 - **CSV Logging**: Automatic logging of all detections for analysis
 - **TAR1090 Integration**: Direct links to view patterns in TAR1090 with proper time ranges
 - **Multi-source Support**: Works with any TAR1090-compatible data source
@@ -94,6 +97,7 @@ python app.py --server http://your-tar1090:8080 --web
 ### Detection Parameters
 
 #### Circle Detection
+
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `MIN_RADIUS` | Minimum circle radius (km) | `0.5` |
@@ -101,6 +105,7 @@ python app.py --server http://your-tar1090:8080 --web
 | `MIN_TURNS` | Minimum number of turns | `1.5` |
 
 #### Grid Detection
+
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `MIN_GRID_LEGS` | Minimum parallel legs | `3` |
@@ -108,13 +113,19 @@ python app.py --server http://your-tar1090:8080 --web
 
 ## 🖥️ Web Interface
 
-### Live View (http://localhost:8888)
+### Live View
+
+Access at: `http://localhost:8888`
+
 - Real-time aircraft positions with TAR1090-style icons
 - Live pattern detection with visual overlays
 - Interactive controls for display options
 - Auto-centering on new pattern detections
 
-### History View (http://localhost:8888/history)
+### History View
+
+Access at: `http://localhost:8888/history`
+
 - Browse all historical pattern detections
 - Filter by date range, pattern type, and callsign
 - Visual timeline of detection activity
@@ -124,12 +135,14 @@ python app.py --server http://your-tar1090:8080 --web
 ## 📊 Data Output
 
 ### CSV Files
+
 Pattern detections are automatically logged to CSV files in the data directory:
 
 - `circle_detections.csv` - All circular pattern detections
 - `grid_detections.csv` - All grid pattern detections
 
 ### CSV Fields
+
 - Timestamp, Aircraft ID, Callsign
 - Pattern characteristics (radius, turns, coverage area)
 - Position data (center lat/lon)
@@ -139,7 +152,9 @@ Pattern detections are automatically logged to CSV files in the data directory:
 ## 🐳 Docker Deployment
 
 ### Multi-Architecture Support
+
 The container supports multiple architectures:
+
 - `linux/amd64` - Standard x86-64
 - `linux/arm64` - 64-bit ARM (Raspberry Pi 4, etc.)
 - `linux/arm/v7` - 32-bit ARM
@@ -201,6 +216,7 @@ Options:
 ## 📈 Pattern Detection Logic
 
 ### Circle Detection Algorithm
+
 1. Analyzes aircraft track points to identify curved paths
 2. Calculates center point and radius of potential circles
 3. Counts completed turns (360° rotations)
@@ -208,6 +224,7 @@ Options:
 5. Logs detection with TAR1090 replay link
 
 ### Grid Detection Algorithm
+
 1. Identifies parallel flight segments
 2. Analyzes heading changes between legs
 3. Validates grid spacing and coverage area

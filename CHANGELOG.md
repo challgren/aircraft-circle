@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-06
 
 ### Added
+
 - Initial release of Aircraft Circle pattern detection system
 - Real-time circle pattern detection for training and holding patterns
 - Grid pattern detection for survey and search operations
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive documentation
 
 ### Features
+
 - Circle Detection
   - Configurable radius range (0.5-10km default)
   - Minimum turn detection (1.5 turns default)
@@ -44,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Interactive controls
 
 ### Technical
+
 - Python 3.8+ support
 - Flask web framework
 - Leaflet.js mapping
@@ -53,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSV data persistence
 
 ### Documentation
+
 - Comprehensive README
 - Docker deployment guide
 - Configuration reference
@@ -64,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Future Releases
 
 ### [Planned Features]
+
 - Additional pattern types (figure-8, racetrack)
 - Email/webhook notifications
 - Pattern statistics dashboard

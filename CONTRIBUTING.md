@@ -5,6 +5,7 @@ Thank you for your interest in contributing to Aircraft Circle! This document pr
 ## Code of Conduct
 
 By participating in this project, you agree to abide by our code of conduct:
+
 - Be respectful and inclusive
 - Welcome newcomers and help them get started
 - Focus on constructive criticism
@@ -52,6 +53,7 @@ pip install black flake8 pytest
 #### Development Workflow
 
 1. Create a feature branch:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -59,6 +61,7 @@ pip install black flake8 pytest
 2. Make your changes following our coding standards
 
 3. Test your changes:
+
    ```bash
    # Run the application
    python app.py --test
@@ -71,12 +74,14 @@ pip install black flake8 pytest
    ```
 
 4. Commit your changes:
+
    ```bash
    git add .
    git commit -m "Add: brief description of changes"
    ```
 
 5. Push to your fork:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -114,6 +119,7 @@ def calculate_circle_radius(positions: List[Position]) -> float:
 ### Commit Messages
 
 Use clear, descriptive commit messages:
+
 - `Add: new feature description`
 - `Fix: bug description`
 - `Update: component description`
@@ -230,6 +236,7 @@ docker buildx build \
 ## Recognition
 
 Contributors will be recognized in:
+
 - README.md acknowledgments
 - Release notes
 - Project documentation
