@@ -1185,6 +1185,13 @@ HISTORY_HTML_TEMPLATE = '''
                 allCircles = data.circles || [];
                 allGrids = data.grids || [];
                 
+                console.log('Loaded history data:', {
+                    circles: allCircles.length,
+                    grids: allGrids.length,
+                    sampleCircle: allCircles[0],
+                    sampleGrid: allGrids[0]
+                });
+                
                 // Update stats
                 document.getElementById('totalCircles').textContent = allCircles.length;
                 document.getElementById('totalGrids').textContent = allGrids.length;
@@ -1210,29 +1217,58 @@ HISTORY_HTML_TEMPLATE = '''
             
             // Filter circles
             filteredCircles = allCircles.filter(circle => {
-                const detected = new Date(circle.detected_at);
-                const duration = (new Date(circle.last_seen) - detected) / 60000; // minutes
-                
-                return detected >= startDate && 
-                       detected <= endDate && 
-                       (patternType === 'all' || patternType === 'circles') &&
-                       (!callsignSearch || circle.callsign.toLowerCase().includes(callsignSearch)) &&
-                       duration >= minDuration;
+                try {
+                    const detected = new Date(circle.detected_at);
+                    const lastSeen = new Date(circle.last_seen || circle.detected_at);
+                    const duration = (lastSeen - detected) / 60000; // minutes
+                    
+                    // Check for valid dates
+                    if (isNaN(detected.getTime())) return false;
+                    
+                    return detected >= startDate && 
+                           detected <= endDate && 
+                           (patternType === 'all' || patternType === 'circles') &&
+                           (!callsignSearch || circle.callsign.toLowerCase().includes(callsignSearch)) &&
+                           (!isNaN(duration) && duration >= minDuration);
+                } catch (e) {
+                    console.error('Error filtering circle:', e, circle);
+                    return false;
+                }
             });
             
             // Filter grids
             filteredGrids = allGrids.filter(grid => {
-                const detected = new Date(grid.detected_at);
-                const duration = (new Date(grid.last_seen) - detected) / 60000; // minutes
-                
-                return detected >= startDate && 
-                       detected <= endDate && 
-                       (patternType === 'all' || patternType === 'grids') &&
-                       (!callsignSearch || grid.callsign.toLowerCase().includes(callsignSearch)) &&
-                       duration >= minDuration;
+                try {
+                    const detected = new Date(grid.detected_at);
+                    const lastSeen = new Date(grid.last_seen || grid.detected_at);
+                    const duration = (lastSeen - detected) / 60000; // minutes
+                    
+                    // Check for valid dates
+                    if (isNaN(detected.getTime())) return false;
+                    
+                    return detected >= startDate && 
+                           detected <= endDate && 
+                           (patternType === 'all' || patternType === 'grids') &&
+                           (!callsignSearch || grid.callsign.toLowerCase().includes(callsignSearch)) &&
+                           (!isNaN(duration) && duration >= minDuration);
+                } catch (e) {
+                    console.error('Error filtering grid:', e, grid);
+                    return false;
+                }
             });
             
             // Update display
+            console.log('Filtered data:', {
+                filteredCircles: filteredCircles.length,
+                filteredGrids: filteredGrids.length,
+                filters: {
+                    startDate: startDate.toISOString(),
+                    endDate: endDate.toISOString(),
+                    patternType,
+                    callsignSearch,
+                    minDuration
+                }
+            });
             displayHistory();
             updateMap();
         }
@@ -2694,11 +2730,23 @@ class TAR1090Monitor:
                             try:
                                 # Map CSV columns to expected fields
                                 # The CSV uses different column names than what we expect
+                                # Handle timestamp - use it for detected_at, and add 1 minute for last_seen if not separate
+                                timestamp = row.get('timestamp', row.get('detected_at', ''))
+                                last_seen = row.get('last_seen', '')
+                                if not last_seen or last_seen == timestamp:
+                                    # Add a small duration if last_seen is not available
+                                    try:
+                                        from datetime import datetime, timedelta
+                                        dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                                        last_seen = (dt + timedelta(minutes=1)).isoformat()
+                                    except:
+                                        last_seen = timestamp
+                                
                                 history_data['circles'].append({
                                     'hex_id': row.get('hex_id', ''),
                                     'callsign': row.get('callsign', ''),
-                                    'detected_at': row.get('timestamp', row.get('detected_at', '')),
-                                    'last_seen': row.get('timestamp', row.get('last_seen', '')),
+                                    'detected_at': timestamp,
+                                    'last_seen': last_seen,
                                     'center_lat': float(row.get('center_lat', 0)),
                                     'center_lon': float(row.get('center_lon', 0)),
                                     'radius': float(row.get('radius_km', row.get('radius', 0))),
@@ -2721,11 +2769,23 @@ class TAR1090Monitor:
                         for row in reader:
                             try:
                                 # Map CSV columns to expected fields
+                                # Handle timestamp - use it for detected_at, and add 1 minute for last_seen if not separate
+                                timestamp = row.get('timestamp', row.get('detected_at', ''))
+                                last_seen = row.get('last_seen', '')
+                                if not last_seen or last_seen == timestamp:
+                                    # Add a small duration if last_seen is not available
+                                    try:
+                                        from datetime import datetime, timedelta
+                                        dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                                        last_seen = (dt + timedelta(minutes=1)).isoformat()
+                                    except:
+                                        last_seen = timestamp
+                                
                                 history_data['grids'].append({
                                     'hex_id': row.get('hex_id', ''),
                                     'callsign': row.get('callsign', ''),
-                                    'detected_at': row.get('timestamp', row.get('detected_at', '')),
-                                    'last_seen': row.get('timestamp', row.get('last_seen', '')),
+                                    'detected_at': timestamp,
+                                    'last_seen': last_seen,
                                     'pattern_type': row.get('pattern_type', ''),
                                     'center_lat': float(row.get('center_lat', 0)),
                                     'center_lon': float(row.get('center_lon', 0)),
