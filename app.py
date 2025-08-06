@@ -2744,7 +2744,20 @@ class TAR1090Monitor:
             if self.log_file.exists():
                 try:
                     with open(self.log_file, 'r') as f:
-                        reader = csv.DictReader(f)
+                        # Check if file has header by reading first line
+                        first_line = f.readline()
+                        f.seek(0)  # Reset to beginning
+                        
+                        # If first line doesn't start with "timestamp", assume no header
+                        if first_line and not first_line.startswith('timestamp'):
+                            # No header, use explicit fieldnames
+                            fieldnames = ['timestamp', 'hex_id', 'callsign', 'center_lat', 'center_lon', 
+                                        'radius_km', 'turns', 'altitude_ft', 'speed_kts', 'duration_s', 'tar1090_url']
+                            reader = csv.DictReader(f, fieldnames=fieldnames)
+                        else:
+                            # Has header
+                            reader = csv.DictReader(f)
+                        
                         for row in reader:
                             try:
                                 # Map CSV columns to expected fields
@@ -2790,7 +2803,21 @@ class TAR1090Monitor:
             if self.grid_log_file.exists():
                 try:
                     with open(self.grid_log_file, 'r') as f:
-                        reader = csv.DictReader(f)
+                        # Check if file has header by reading first line
+                        first_line = f.readline()
+                        f.seek(0)  # Reset to beginning
+                        
+                        # If first line doesn't start with "timestamp", assume no header
+                        if first_line and not first_line.startswith('timestamp'):
+                            # No header, use explicit fieldnames (based on actual data format)
+                            fieldnames = ['timestamp', 'hex_id', 'callsign', 'pattern_type', 'center_lat', 'center_lon',
+                                        'grid_bearing', 'line_spacing_km', 'num_legs', 'coverage_area_km2', 
+                                        'altitude_ft', 'speed_kts', 'duration_s', 'tar1090_url']
+                            reader = csv.DictReader(f, fieldnames=fieldnames)
+                        else:
+                            # Has header
+                            reader = csv.DictReader(f)
+                        
                         for row in reader:
                             try:
                                 # Map CSV columns to expected fields
