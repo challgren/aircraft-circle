@@ -1188,8 +1188,9 @@ HISTORY_HTML_TEMPLATE = '''
                 const response = await fetch(baseUrl + '/api/history');
                 const data = await response.json();
                 
-                allCircles = data.circles || [];
-                allGrids = data.grids || [];
+                // Filter out entries with invalid timestamps
+                allCircles = (data.circles || []).filter(c => c.detected_at && c.detected_at.trim() !== '');
+                allGrids = (data.grids || []).filter(g => g.detected_at && g.detected_at.trim() !== '');
                 
                 console.log('Loaded history data:', {
                     circles: allCircles.length,
@@ -1431,6 +1432,12 @@ HISTORY_HTML_TEMPLATE = '''
             const dailyCounts = {};
             
             [...allCircles, ...allGrids].forEach(pattern => {
+                // Skip entries without detected_at
+                if (!pattern.detected_at || pattern.detected_at.trim() === '') {
+                    console.warn('Pattern missing detected_at:', pattern);
+                    return;
+                }
+                
                 const dateObj = new Date(pattern.detected_at);
                 // Skip invalid dates
                 if (isNaN(dateObj.getTime())) {
@@ -2746,7 +2753,7 @@ class TAR1090Monitor:
                                 timestamp = row.get('timestamp', row.get('detected_at', ''))
                                 
                                 # Skip entries with invalid or missing timestamps
-                                if not timestamp:
+                                if not timestamp or timestamp.strip() == '':
                                     print(f"Skipping circle entry with no timestamp: {row}")
                                     continue
                                     
@@ -2791,7 +2798,7 @@ class TAR1090Monitor:
                                 timestamp = row.get('timestamp', row.get('detected_at', ''))
                                 
                                 # Skip entries with invalid or missing timestamps
-                                if not timestamp:
+                                if not timestamp or timestamp.strip() == '':
                                     print(f"Skipping grid entry with no timestamp: {row}")
                                     continue
                                     
