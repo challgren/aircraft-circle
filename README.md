@@ -7,6 +7,7 @@
 [![Latest Version](https://ghcr-badge.egpl.dev/challgren/aircraft-patterns/tags?limit=1&label=version)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Issues](https://img.shields.io/github/issues/challgren/aircraft-patterns)](https://github.com/challgren/aircraft-patterns/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/challgren/aircraft-patterns)](https://github.com/challgren/aircraft-patterns/commits/main)
 [![GitHub Stars](https://img.shields.io/github/stars/challgren/aircraft-patterns?style=social)](https://github.com/challgren/aircraft-patterns/stargazers)
 
 Real-time aircraft pattern detection system that monitors TAR1090 feeds to identify and log circular holding patterns, training flights, and grid survey patterns.
