@@ -48,6 +48,10 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages -r requirement
 # Copy rootfs overlay (includes static files)
 COPY rootfs/ /
 
+# Create data directory for persistent storage
+RUN mkdir -p /app/data && \
+    chmod 755 /app/data
+
 # Ensure scripts are executable
 RUN chmod +x /etc/s6-overlay/s6-rc.d/aircraft-circle/run && \
     chmod +x /scripts/healthcheck.py

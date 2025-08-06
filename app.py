@@ -204,6 +204,58 @@ MAP_HTML_TEMPLATE = '''
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             z-index: 1000;
         }
+        
+        /* Enhanced popup styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .leaflet-popup-content {
+            margin: 16px 20px;
+            line-height: 1.6;
+            font-size: 14px;
+            min-width: 280px;
+            max-width: 350px;
+        }
+        
+        .aircraft-popup {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .aircraft-popup .aircraft-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 4px;
+        }
+        
+        .aircraft-popup .aircraft-details {
+            display: grid;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .aircraft-popup .aircraft-link {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .aircraft-popup .aircraft-link:hover {
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -517,11 +569,18 @@ MAP_HTML_TEMPLATE = '''
                         }).addTo(aircraftLayer);
                         
                         marker.bindPopup(`
-                            <strong>${circle.callsign}</strong><br>
-                            Circling: ${circle.turns.toFixed(1)} turns<br>
-                            Radius: ${circle.radius.toFixed(1)} km<br>
-                            ${circle.current_alt ? `Altitude: ${circle.current_alt.toLocaleString()} ft<br>` : ''}
-                            ${circle.current_speed ? `Speed: ${circle.current_speed} kts` : ''}
+                            <div class="aircraft-popup">
+                                <div class="aircraft-title">🔴 ${circle.callsign}</div>
+                                <div class="aircraft-details">
+                                    <div><strong>Pattern:</strong> Circling (${circle.turns.toFixed(1)} turns)</div>
+                                    <div><strong>Radius:</strong> ${circle.radius.toFixed(1)} km</div>
+                                    ${circle.current_alt ? `<div><strong>Altitude:</strong> ${circle.current_alt.toLocaleString()} ft</div>` : ''}
+                                    ${circle.current_speed ? `<div><strong>Speed:</strong> ${circle.current_speed} kts</div>` : ''}
+                                    <div><strong>Aircraft ID:</strong> ${circle.hex_id}</div>
+                                    ${circle.type ? `<div><strong>Type:</strong> ${circle.type}</div>` : ''}
+                                </div>
+                                ${circle.tar1090_radar_url ? `<a href="${circle.tar1090_radar_url}" target="_blank" class="aircraft-link">📡 View on Radar</a>` : ''}
+                            </div>
                         `);
                         
                         visibleAircraftCount++;
@@ -577,12 +636,19 @@ MAP_HTML_TEMPLATE = '''
                         }).addTo(aircraftLayer);
                         
                         marker.bindPopup(`
-                            <strong>${grid.callsign}</strong><br>
-                            Pattern: ${grid.pattern_type}<br>
-                            Legs: ${grid.num_legs}<br>
-                            Coverage: ${grid.coverage_area.toFixed(1)} km²<br>
-                            ${grid.current_alt ? `Altitude: ${grid.current_alt.toLocaleString()} ft<br>` : ''}
-                            ${grid.current_speed ? `Speed: ${grid.current_speed} kts` : ''}
+                            <div class="aircraft-popup">
+                                <div class="aircraft-title">🟢 ${grid.callsign}</div>
+                                <div class="aircraft-details">
+                                    <div><strong>Pattern:</strong> ${grid.pattern_type}</div>
+                                    <div><strong>Grid Legs:</strong> ${grid.num_legs}</div>
+                                    <div><strong>Coverage:</strong> ${grid.coverage_area.toFixed(1)} km²</div>
+                                    ${grid.current_alt ? `<div><strong>Altitude:</strong> ${grid.current_alt.toLocaleString()} ft</div>` : ''}
+                                    ${grid.current_speed ? `<div><strong>Speed:</strong> ${grid.current_speed} kts</div>` : ''}
+                                    <div><strong>Aircraft ID:</strong> ${grid.hex_id}</div>
+                                    ${grid.type ? `<div><strong>Type:</strong> ${grid.type}</div>` : ''}
+                                </div>
+                                ${grid.tar1090_radar_url ? `<a href="${grid.tar1090_radar_url}" target="_blank" class="aircraft-link">📡 View on Radar</a>` : ''}
+                            </div>
                         `);
                         
                         visibleAircraftCount++;
@@ -625,10 +691,17 @@ MAP_HTML_TEMPLATE = '''
                         }).addTo(aircraftLayer);
                         
                         marker.bindPopup(`
-                            <strong>${aircraft.callsign}</strong><br>
-                            Type: ${aircraft.type || 'Unknown'}<br>
-                            ${aircraft.current_alt ? `Altitude: ${aircraft.current_alt.toLocaleString()} ft<br>` : ''}
-                            ${aircraft.current_speed ? `Speed: ${aircraft.current_speed} kts` : ''}
+                            <div class="aircraft-popup">
+                                <div class="aircraft-title">✈️ ${aircraft.callsign}</div>
+                                <div class="aircraft-details">
+                                    <div><strong>Type:</strong> ${aircraft.type || 'Unknown'}</div>
+                                    ${aircraft.current_alt ? `<div><strong>Altitude:</strong> ${aircraft.current_alt.toLocaleString()} ft</div>` : ''}
+                                    ${aircraft.current_speed ? `<div><strong>Speed:</strong> ${aircraft.current_speed} kts</div>` : ''}
+                                    <div><strong>Aircraft ID:</strong> ${aircraft.hex_id}</div>
+                                    ${aircraft.category ? `<div><strong>Category:</strong> ${aircraft.category}</div>` : ''}
+                                </div>
+                                ${aircraft.tar1090_radar_url ? `<a href="${aircraft.tar1090_radar_url}" target="_blank" class="aircraft-link">📡 View on Radar</a>` : ''}
+                            </div>
                         `);
                         
                         visibleAircraftCount++;
@@ -1878,8 +1951,11 @@ class TAR1090Monitor:
         self.active_grids: Set[str] = set()  # Track aircraft currently in grid patterns
         self.circle_start_times: Dict[str, float] = {}  # Track when circling started
         self.grid_start_times: Dict[str, float] = {}  # Track when grid pattern started
-        self.log_file = Path("circle_detections.csv")
-        self.grid_log_file = Path("grid_detections.csv")
+        # Use data directory for persistent storage
+        self.data_dir = Path("/app/data")
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        self.log_file = self.data_dir / "circle_detections.csv"
+        self.grid_log_file = self.data_dir / "grid_detections.csv"
         self.tar1090_base_url = "https://radar.hallgren.net/map"
         
         # Display settings
@@ -2438,6 +2514,9 @@ class TAR1090Monitor:
         
         # Add circling aircraft
         for aircraft, detection in self.get_circling_aircraft():
+            # Generate TAR1090 radar URL for circling aircraft
+            tar1090_radar_url = f"{self.tar1090_base_url}/?icao={aircraft.hex_id}&zoom=12"
+            
             circle_data = {
                 'hex_id': aircraft.hex_id,
                 'callsign': aircraft.callsign,
@@ -2445,6 +2524,7 @@ class TAR1090Monitor:
                 'center_lon': detection.center_lon,
                 'radius': detection.radius,
                 'turns': detection.turns,
+                'tar1090_radar_url': tar1090_radar_url,
                 'path': [
                     {'lat': p.lat, 'lon': p.lon, 'alt': p.altitude, 'time': p.timestamp}
                     for p in aircraft.path
@@ -2458,6 +2538,9 @@ class TAR1090Monitor:
         
         # Add grid aircraft
         for aircraft, detection in self.get_grid_aircraft():
+            # Generate TAR1090 radar URL for grid aircraft
+            tar1090_radar_url = f"{self.tar1090_base_url}/?icao={aircraft.hex_id}&zoom=12"
+            
             grid_data = {
                 'hex_id': aircraft.hex_id,
                 'callsign': aircraft.callsign,
@@ -2467,6 +2550,7 @@ class TAR1090Monitor:
                 'grid_bearing': detection.grid_bearing,
                 'line_spacing': detection.line_spacing,
                 'num_legs': detection.num_legs,
+                'tar1090_radar_url': tar1090_radar_url,
                 'coverage_area': detection.coverage_area,
                 'path': [
                     {'lat': p.lat, 'lon': p.lon, 'alt': p.altitude, 'time': p.timestamp}
@@ -2494,6 +2578,9 @@ class TAR1090Monitor:
                     # Limit track points for performance
                     track_points = aircraft.path[-max_track_points:] if len(aircraft.path) > max_track_points else aircraft.path
                     
+                    # Generate TAR1090 radar URL for live aircraft
+                    tar1090_radar_url = f"{self.tar1090_base_url}/?icao={aircraft.hex_id}&zoom=12"
+                    
                     aircraft_data = {
                         'hex_id': aircraft.hex_id,
                         'callsign': aircraft.callsign,
@@ -2505,6 +2592,7 @@ class TAR1090Monitor:
                         'current_speed': aircraft.path[-1].speed if aircraft.path else None,
                         'type': aircraft.type,
                         'category': aircraft.category,
+                        'tar1090_radar_url': tar1090_radar_url,
                         'in_pattern': False
                     }
                     data['all_aircraft'].append(aircraft_data)
@@ -2776,7 +2864,8 @@ def main():
     
     # Handle log-related commands first
     if args.show_log:
-        log_file = Path("circle_detections.csv")
+        data_dir = Path("/app/data")
+        log_file = data_dir / "circle_detections.csv"
         if not log_file.exists():
             print("📋 No log file found. Start monitoring to create one.")
             sys.exit(0)
@@ -2808,12 +2897,22 @@ def main():
         sys.exit(0)
     
     if args.clear_log:
-        log_file = Path("circle_detections.csv")
+        data_dir = Path("/app/data")
+        log_file = data_dir / "circle_detections.csv"
+        grid_log_file = data_dir / "grid_detections.csv"
+        
+        cleared = False
         if log_file.exists():
             log_file.unlink()
-            print("✅ Log file cleared.")
-        else:
-            print("📋 No log file to clear.")
+            print("✅ Circle log file cleared.")
+            cleared = True
+        if grid_log_file.exists():
+            grid_log_file.unlink()
+            print("✅ Grid log file cleared.")
+            cleared = True
+        
+        if not cleared:
+            print("📋 No log files to clear.")
         sys.exit(0)
 
     # Create monitor with custom settings
