@@ -15,10 +15,9 @@ MAP_HTML_TEMPLATE = '''
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Get base URL for API calls (handles reverse proxy scenarios)
-        // This works whether we're at root (/) or a subpath (/circles/)
-        const currentPath = window.location.pathname;
-        const baseUrl = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath.replace(/\\/[^/]*$/, '');
+        // For main page, API calls are relative to current location
+        // Use '.' for relative paths which works with or without trailing slash
+        const baseUrl = '.';
         
         // Aircraft icon shapes from tar1090 - embedded directly to avoid loading issues
         const aircraftShapes = {
@@ -797,11 +796,9 @@ HISTORY_HTML_TEMPLATE = '''
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Get base URL for API calls (handles reverse proxy scenarios)
-        const currentPath = window.location.pathname;
-        const baseUrl = currentPath.endsWith('/history') ? 
-            currentPath.slice(0, -8) : // Remove '/history'
-            (currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath.replace(/\\/[^/]*$/, ''));
+        // For history page, API calls should be relative to current page
+        // Since we're at /circles/history, ../api/history will resolve to /circles/api/history
+        const baseUrl = '..';
     </script>
     <script>
         // Aircraft icon shapes from tar1090 - embedded directly to avoid loading issues
