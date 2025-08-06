@@ -1268,8 +1268,8 @@ HISTORY_HTML_TEMPLATE = '''
                 filteredCircles: filteredCircles.length,
                 filteredGrids: filteredGrids.length,
                 filters: {
-                    startDate: startDate.toISOString(),
-                    endDate: endDate.toISOString(),
+                    startDate: !isNaN(startDate.getTime()) ? startDate.toISOString() : 'Invalid',
+                    endDate: !isNaN(endDate.getTime()) ? endDate.toISOString() : 'Invalid',
                     patternType,
                     callsignSearch,
                     minDuration
@@ -1431,7 +1431,13 @@ HISTORY_HTML_TEMPLATE = '''
             const dailyCounts = {};
             
             [...allCircles, ...allGrids].forEach(pattern => {
-                const date = new Date(pattern.detected_at).toISOString().split('T')[0];
+                const dateObj = new Date(pattern.detected_at);
+                // Skip invalid dates
+                if (isNaN(dateObj.getTime())) {
+                    console.warn('Invalid date in pattern:', pattern);
+                    return;
+                }
+                const date = dateObj.toISOString().split('T')[0];
                 dailyCounts[date] = (dailyCounts[date] || 0) + 1;
             });
             
