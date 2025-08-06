@@ -1,7 +1,7 @@
 services:
-  aircraft-circle:
-    image: ghcr.io/challgren/aircraft-circle:latest
-    container_name: aircraft-circle
+  aircraft-patterns:
+    image: ghcr.io/challgren/aircraft-patterns:latest
+    container_name: aircraft-patterns
     restart: unless-stopped
     ports:
       - 8888:8888

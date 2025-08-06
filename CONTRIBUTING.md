@@ -1,6 +1,6 @@
-# Contributing to Aircraft Circle
+# Contributing to Aircraft Patterns
 
-Thank you for your interest in contributing to Aircraft Circle! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to Aircraft Patterns! This document provides guidelines and instructions for contributing to the project.
 
 ## Code of Conduct
 
@@ -15,7 +15,7 @@ By participating in this project, you agree to abide by our code of conduct:
 
 ### Reporting Issues
 
-1. Check if the issue already exists in [GitHub Issues](https://github.com/challgren/aircraft-circle/issues)
+1. Check if the issue already exists in [GitHub Issues](https://github.com/challgren/aircraft-patterns/issues)
 2. If not, create a new issue with:
    - Clear, descriptive title
    - Steps to reproduce the problem
@@ -36,8 +36,8 @@ By participating in this project, you agree to abide by our code of conduct:
 
 ```bash
 # Fork and clone the repository
-git clone https://github.com/YOUR-USERNAME/aircraft-circle.git
-cd aircraft-circle
+git clone https://github.com/YOUR-USERNAME/aircraft-patterns.git
+cd aircraft-patterns
 
 # Create a virtual environment
 python -m venv venv
@@ -161,13 +161,13 @@ def test_circle_detection():
 
 ```bash
 # Build for testing
-docker build -t aircraft-circle:dev .
+docker build -t aircraft-patterns:dev .
 
 # Run local build
 docker run -it --rm \
   -p 8888:8888 \
   -e TAR1090_URL=http://your-tar1090:80 \
-  aircraft-circle:dev
+  aircraft-patterns:dev
 ```
 
 ### Multi-Architecture Build
@@ -179,7 +179,7 @@ docker buildx create --use
 # Build for multiple platforms
 docker buildx build \
   --platform linux/amd64,linux/arm64,linux/arm/v7 \
-  -t aircraft-circle:dev \
+  -t aircraft-patterns:dev \
   .
 ```
 
@@ -241,4 +241,4 @@ Contributors will be recognized in:
 - Release notes
 - Project documentation
 
-Thank you for contributing to Aircraft Circle!
+Thank you for contributing to Aircraft Patterns!

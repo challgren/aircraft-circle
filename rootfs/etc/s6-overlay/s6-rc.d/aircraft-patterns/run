@@ -35,7 +35,7 @@ if [[ "${QUIET_MODE}" == "true" ]]; then
 fi
 
 # Log startup
-echo "Starting Aircraft Circle Detector..."
+echo "Starting Aircraft Patterns Detector..."
 echo "TAR1090 URL: ${TAR1090_URL}"
 echo "Web interface: ${ENABLE_WEB} (port ${WEB_PORT})"
 

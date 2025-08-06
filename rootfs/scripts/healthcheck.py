@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Health check script for Aircraft Circle Detector container."""
+"""Health check script for Aircraft Patterns Detector container."""
 
 import sys
 import os

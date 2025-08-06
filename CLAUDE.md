@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Aircraft Circle is a Python-based pattern detection system for monitoring aircraft via TAR1090 feeds. It identifies circular holding patterns, training flights, and grid survey patterns in real-time, with a Flask web interface for visualization.
+Aircraft Patterns is a Python-based pattern detection system for monitoring aircraft via TAR1090 feeds. It identifies circular holding patterns, training flights, and grid survey patterns in real-time, with a Flask web interface for visualization.
 
 ## Key Architecture
 
@@ -20,7 +20,7 @@ Aircraft Circle is a Python-based pattern detection system for monitoring aircra
 2. **Docker Structure**:
    - Based on `ghcr.io/sdr-enthusiasts/docker-baseimage:base`
    - Uses s6-overlay v3 for process management
-   - Service configuration in `rootfs/etc/s6-overlay/s6-rc.d/aircraft-circle/`
+   - Service configuration in `rootfs/etc/s6-overlay/s6-rc.d/aircraft-patterns/`
    - Health check script in `rootfs/scripts/healthcheck.py`
 
 3. **Web Interface**:
@@ -35,13 +35,13 @@ Aircraft Circle is a Python-based pattern detection system for monitoring aircra
 
 ```bash
 # Build Docker image locally
-docker build -t aircraft-circle:dev .
+docker build -t aircraft-patterns:dev .
 
 # Multi-architecture build
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aircraft-circle:dev .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aircraft-patterns:dev .
 
 # Run locally with Docker
-docker run -it --rm -p 8888:8888 -e TAR1090_URL=http://fr24.hallgren.net:8080 aircraft-circle:dev
+docker run -it --rm -p 8888:8888 -e TAR1090_URL=http://fr24.hallgren.net:8080 aircraft-patterns:dev
 
 # Run Python directly (for development)
 python3 app.py --server http://fr24.hallgren.net:8080 --web --web-port 8888
@@ -81,7 +81,7 @@ The s6 service configuration is critical for Docker container operation:
 
 - Run script must use `#!/command/with-contenv bash` (not `/usr/bin/with-contenv`)
 - Service runs as root (no `abc` user in base image)
-- Located at `/etc/s6-overlay/s6-rc.d/aircraft-circle/run`
+- Located at `/etc/s6-overlay/s6-rc.d/aircraft-patterns/run`
 
 ### Reverse Proxy Support
 

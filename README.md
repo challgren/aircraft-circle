@@ -1,8 +1,8 @@
-# Aircraft Circle - Pattern Detection for ADS-B/TAR1090
+# Aircraft Patterns - Pattern Detection for ADS-B/TAR1090
 
-[![Docker Image Size](https://img.shields.io/docker/image-size/ghcr.io/challgren/aircraft-circle/latest)](https://github.com/challgren/aircraft-circle/pkgs/container/aircraft-circle)
+[![Docker Image Size](https://img.shields.io/docker/image-size/ghcr.io/challgren/aircraft-patterns/latest)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub Issues](https://img.shields.io/github/issues/challgren/aircraft-circle)](https://github.com/challgren/aircraft-circle/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/challgren/aircraft-patterns)](https://github.com/challgren/aircraft-patterns/issues)
 
 Real-time aircraft pattern detection system that monitors TAR1090 feeds to identify and log circular holding patterns, training flights, and grid survey patterns.
 
@@ -38,12 +38,12 @@ Real-time aircraft pattern detection system that monitors TAR1090 feeds to ident
 
 ```bash
 docker run -d \
-  --name=aircraft-circle \
+  --name=aircraft-patterns \
   -p 8888:8888 \
   -e TAR1090_URL=http://your-tar1090:80 \
   -v ./data:/app/data \
   --restart unless-stopped \
-  ghcr.io/challgren/aircraft-circle:latest
+  ghcr.io/challgren/aircraft-patterns:latest
 ```
 
 ### Using Docker Compose
@@ -52,9 +52,9 @@ docker run -d \
 version: '3.8'
 
 services:
-  aircraft-circle:
-    image: ghcr.io/challgren/aircraft-circle:latest
-    container_name: aircraft-circle
+  aircraft-patterns:
+    image: ghcr.io/challgren/aircraft-patterns:latest
+    container_name: aircraft-patterns
     restart: unless-stopped
     ports:
       - 8888:8888
@@ -71,8 +71,8 @@ services:
 
 ```bash
 # Clone the repository
-git clone https://github.com/challgren/aircraft-circle.git
-cd aircraft-circle
+git clone https://github.com/challgren/aircraft-patterns.git
+cd aircraft-patterns
 
 # Install dependencies
 pip install -r requirements.txt
@@ -183,7 +183,7 @@ For mounting at `/circles/`:
 
 ```nginx
 location /circles/ {
-    proxy_pass http://aircraft-circle:8888/;
+    proxy_pass http://aircraft-patterns:8888/;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $http_connection;
     proxy_set_header Host $http_host;
@@ -203,10 +203,10 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - PROXY_HOSTS=aircraft,aircraft-circle,8888
+      - PROXY_HOSTS=aircraft,aircraft-patterns,8888
 
-  aircraft-circle:
-    image: ghcr.io/challgren/aircraft-circle:latest
+  aircraft-patterns:
+    image: ghcr.io/challgren/aircraft-patterns:latest
     environment:
       - TAR1090_URL=http://tar1090:80
 ```
@@ -274,8 +274,8 @@ services:
     ports:
       - 8080:80
 
-  aircraft-circle:
-    image: ghcr.io/challgren/aircraft-circle:latest
+  aircraft-patterns:
+    image: ghcr.io/challgren/aircraft-patterns:latest
     ports:
       - 8888:8888
     environment:
@@ -346,7 +346,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🐛 Issues & Support
 
-- [GitHub Issues](https://github.com/challgren/aircraft-circle/issues)
+- [GitHub Issues](https://github.com/challgren/aircraft-patterns/issues)
 - [SDR-Enthusiasts Discord](https://discord.gg/sTf9uYF)
 
 ## 📊 Stats

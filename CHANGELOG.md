@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Aircraft Circle will be documented in this file.
+All notable changes to Aircraft Patterns will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release of Aircraft Circle pattern detection system
+- Initial release of Aircraft Patterns detection system
 - Real-time circle pattern detection for training and holding patterns
 - Grid pattern detection for survey and search operations
 - Web interface with live map visualization

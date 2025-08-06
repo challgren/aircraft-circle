@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-TAR1090 Aircraft Circle Detector
-A Python application to monitor aircraft and detect circular flight patterns.
+TAR1090 Aircraft Patterns Detector
+A Python application to monitor aircraft and detect various flight patterns.
 """
 
 # HTML template for the map viewer
@@ -2922,7 +2922,7 @@ class TAR1090Monitor:
                 time.sleep(self.update_interval)
 
         except KeyboardInterrupt:
-            print("\n\n👋 Stopping monitor... Thanks for using Aircraft Circle Detector!")
+            print("\n\n👋 Stopping monitor... Thanks for using Aircraft Patterns Detector!")
             self.print_log_summary()
             self.running = False
         except Exception as e:

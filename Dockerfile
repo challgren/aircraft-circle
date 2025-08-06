@@ -53,7 +53,7 @@ RUN mkdir -p /app/data && \
     chmod 755 /app/data
 
 # Ensure scripts are executable
-RUN chmod +x /etc/s6-overlay/s6-rc.d/aircraft-circle/run && \
+RUN chmod +x /etc/s6-overlay/s6-rc.d/aircraft-patterns/run && \
     chmod +x /scripts/healthcheck.py
 
 # Expose web port
