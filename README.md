@@ -1,6 +1,6 @@
 # Aircraft Patterns - Pattern Detection for ADS-B/TAR1090
 
-[![Docker Image Size](https://img.shields.io/docker/image-size/ghcr.io/challgren/aircraft-patterns/latest)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
+[![Docker Image](https://ghcr-badge.egpl.dev/challgren/aircraft-patterns/size?tag=latest&label=image%20size)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Issues](https://img.shields.io/github/issues/challgren/aircraft-patterns)](https://github.com/challgren/aircraft-patterns/issues)
 
