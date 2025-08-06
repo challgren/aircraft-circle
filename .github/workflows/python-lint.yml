@@ -1,0 +1,66 @@
+name: Python Lint
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    paths:
+      - "**.py"
+      - "requirements.txt"
+      - ".github/workflows/python-lint.yml"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "**.py"
+      - "requirements.txt"
+      - ".github/workflows/python-lint.yml"
+
+jobs:
+  lint:
+    name: Python Linting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 black isort mypy pylint
+
+      - name: Run Black (format check)
+        run: black --check --diff app.py
+        continue-on-error: true
+
+      - name: Run isort (import sorting)
+        run: isort --check-only --diff app.py
+        continue-on-error: true
+
+      - name: Run Flake8 (style guide)
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 app.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 app.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Run Pylint
+        run: pylint app.py --exit-zero --max-line-length=127
+        continue-on-error: true
+
+      - name: Run MyPy (type checking)
+        run: mypy app.py --ignore-missing-imports
+        continue-on-error: true
