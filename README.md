@@ -175,14 +175,25 @@ Access at: `http://localhost:8888/history`
 
 ### Reverse Proxy Support
 
-The application works seamlessly behind reverse proxies like `ghcr.io/sdr-enthusiasts/docker-reversewebproxy`. The Flask application automatically handles:
+The application works seamlessly behind reverse proxies including when mounted at a subpath. The application automatically detects its base URL and adjusts all links and API calls accordingly.
 
-- `X-Forwarded-For` - Client IP addresses
-- `X-Forwarded-Proto` - HTTP/HTTPS protocol
-- `X-Forwarded-Host` - Original hostname
-- `X-Forwarded-Prefix` - URL path prefix
+#### Nginx Configuration Example
 
-Example reverse proxy configuration:
+For mounting at `/circles/`:
+
+```nginx
+location /circles/ {
+    proxy_pass http://aircraft-circle:8888/;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_redirect / /circles/;
+}
+```
+
+#### Docker Compose with sdr-enthusiasts/docker-reversewebproxy
 
 ```yaml
 services:
@@ -199,6 +210,15 @@ services:
     environment:
       - TAR1090_URL=http://tar1090:80
 ```
+
+The application automatically handles:
+
+- `X-Forwarded-For` - Client IP addresses
+- `X-Forwarded-Proto` - HTTP/HTTPS protocol
+- `X-Forwarded-Host` - Original hostname
+- `X-Forwarded-Prefix` - URL path prefix
+- Relative URLs for all navigation and API calls
+- Automatic base URL detection for subpath mounting
 
 - Filter by date range, pattern type, and callsign
 - Visual timeline of detection activity

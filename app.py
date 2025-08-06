@@ -15,6 +15,11 @@ MAP_HTML_TEMPLATE = '''
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Get base URL for API calls (handles reverse proxy scenarios)
+        // This works whether we're at root (/) or a subpath (/circles/)
+        const currentPath = window.location.pathname;
+        const baseUrl = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath.replace(/\\/[^/]*$/, '');
+        
         // Aircraft icon shapes from tar1090 - embedded directly to avoid loading issues
         const aircraftShapes = {
             'airliner': {
@@ -205,8 +210,8 @@ MAP_HTML_TEMPLATE = '''
     <div class="header">
         <h1>✈️ Aircraft Pattern Detector - Live View</h1>
         <div class="nav-links">
-            <a href="/" class="active">Live View</a>
-            <a href="/history">History</a>
+            <a href="." class="active">Live View</a>
+            <a href="history">History</a>
         </div>
     </div>
     
@@ -408,7 +413,7 @@ MAP_HTML_TEMPLATE = '''
         // Update patterns from API
         async function updatePatterns() {
             try {
-                const response = await fetch('/api/patterns');
+                const response = await fetch(baseUrl + '/api/patterns');
                 const data = await response.json();
                 
                 // Debug logging
@@ -719,6 +724,13 @@ HISTORY_HTML_TEMPLATE = '''
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Get base URL for API calls (handles reverse proxy scenarios)
+        const currentPath = window.location.pathname;
+        const baseUrl = currentPath.endsWith('/history') ? 
+            currentPath.slice(0, -8) : // Remove '/history'
+            (currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath.replace(/\\/[^/]*$/, ''));
+    </script>
+    <script>
         // Aircraft icon shapes from tar1090 - embedded directly to avoid loading issues
         const aircraftShapes = {
             'airliner': {
@@ -985,8 +997,8 @@ HISTORY_HTML_TEMPLATE = '''
     <div class="header">
         <h1>✈️ Pattern Detection History</h1>
         <div class="nav-links">
-            <a href="/">Live View</a>
-            <a href="/history" class="active">History</a>
+            <a href=".">Live View</a>
+            <a href="history" class="active">History</a>
         </div>
     </div>
     
@@ -1094,7 +1106,7 @@ HISTORY_HTML_TEMPLATE = '''
         // Load history data
         async function loadHistory() {
             try {
-                const response = await fetch('/api/history');
+                const response = await fetch(baseUrl + '/api/history');
                 const data = await response.json();
                 
                 allCircles = data.circles || [];

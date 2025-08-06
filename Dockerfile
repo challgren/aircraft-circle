@@ -15,7 +15,8 @@ ENV PUID=1000 \
     UPDATE_INTERVAL=5 \
     SHOW_ALL_AIRCRAFT=true \
     SHOW_TRACKS=true \
-    MAX_TRACK_POINTS=50
+    MAX_TRACK_POINTS=50 \
+    URL_PREFIX=""
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
