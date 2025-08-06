@@ -154,6 +154,7 @@ services:
     environment:
       - TAR1090_URL=http://tar1090:80
 ```
+
 - Filter by date range, pattern type, and callsign
 - Visual timeline of detection activity
 - Direct links to TAR1090 replay for each pattern
