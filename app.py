@@ -2537,6 +2537,40 @@ class TAR1090Monitor:
         def get_patterns():
             return jsonify(self.get_pattern_data_json())
         
+        @app.route('/api/health')
+        def health_check():
+            """Health check endpoint for monitoring."""
+            # Count active patterns
+            circling_count = len(self.get_circling_aircraft())
+            grid_count = len(self.get_grid_aircraft())
+            
+            health_status = {
+                'status': 'healthy',
+                'timestamp': time.time(),
+                'checks': {
+                    'web_server': True,
+                    'tar1090_connection': self.last_update is not None,
+                    'last_update': self.last_update.timestamp() if self.last_update else 0,
+                    'aircraft_count': len(self.aircraft),
+                    'active_circles': circling_count,
+                    'active_grids': grid_count,
+                    'total_requests': self.total_requests,
+                    'failed_requests': self.failed_requests
+                }
+            }
+            
+            # Check if we haven't received updates in a while (5 minutes)
+            if self.last_update and (time.time() - self.last_update.timestamp()) > 300:
+                health_status['status'] = 'degraded'
+                health_status['checks']['tar1090_connection'] = False
+            
+            # Check if too many requests are failing
+            if self.total_requests > 10 and (self.failed_requests / self.total_requests) > 0.5:
+                health_status['status'] = 'degraded'
+                health_status['checks']['high_failure_rate'] = True
+            
+            return jsonify(health_status)
+        
         @app.route('/history')
         def history():
             return render_template_string(HISTORY_HTML_TEMPLATE)

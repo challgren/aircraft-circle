@@ -55,5 +55,9 @@ RUN chmod +x /etc/s6-overlay/s6-rc.d/aircraft-circle/run && \
 EXPOSE 8888
 
 # Health check
-HEALTHCHECK --start-period=30s --interval=30s --timeout=5s --retries=3 \
+# Start period: 60s to allow service to fully start
+# Interval: 30s for regular checks
+# Timeout: 10s to allow for TAR1090 connection check
+# Retries: 3 failures before marking unhealthy
+HEALTHCHECK --start-period=60s --interval=30s --timeout=10s --retries=3 \
     CMD python3 /scripts/healthcheck.py || exit 1

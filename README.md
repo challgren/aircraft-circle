@@ -111,6 +111,51 @@ python app.py --server http://your-tar1090:8080 --web
 | `MIN_GRID_LEGS` | Minimum parallel legs | `3` |
 | `MIN_LEG_LENGTH` | Minimum leg length (km) | `2.0` |
 
+## 🏥 Health Monitoring
+
+### Docker Health Check
+
+The container includes comprehensive health checks that monitor:
+
+- Python process status
+- Web server responsiveness (when enabled)
+- API endpoint availability
+- TAR1090 connection status
+- Log file writability
+
+Health check configuration:
+
+- **Start Period**: 60 seconds (allows service to fully initialize)
+- **Check Interval**: 30 seconds
+- **Timeout**: 10 seconds per check
+- **Retries**: 3 failures before marking unhealthy
+
+### Health API Endpoint
+
+Access health status at: `http://localhost:8888/api/health`
+
+```json
+{
+  "status": "healthy",
+  "timestamp": 1234567890.123,
+  "checks": {
+    "web_server": true,
+    "tar1090_connection": true,
+    "last_update": 1234567890.123,
+    "aircraft_count": 115,
+    "active_circles": 2,
+    "active_grids": 1,
+    "total_requests": 1000,
+    "failed_requests": 5
+  }
+}
+```
+
+Status values:
+
+- `healthy` - All systems operational
+- `degraded` - Service running but with issues (e.g., TAR1090 connection lost)
+
 ## 🖥️ Web Interface
 
 ### Live View
