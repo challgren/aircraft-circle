@@ -4,7 +4,6 @@
 [![Security Scan](https://github.com/challgren/aircraft-patterns/actions/workflows/security.yml/badge.svg)](https://github.com/challgren/aircraft-patterns/actions/workflows/security.yml)
 [![Python Lint](https://github.com/challgren/aircraft-patterns/actions/workflows/python-lint.yml/badge.svg)](https://github.com/challgren/aircraft-patterns/actions/workflows/python-lint.yml)
 [![Docker Image](https://ghcr-badge.egpl.dev/challgren/aircraft-patterns/size?tag=latest&label=image%20size)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
-[![Docker Pulls](https://ghcr-badge.egpl.dev/challgren/aircraft-patterns/pulls?label=pulls)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
 [![Latest Version](https://ghcr-badge.egpl.dev/challgren/aircraft-patterns/tags?limit=1&label=version)](https://github.com/challgren/aircraft-patterns/pkgs/container/aircraft-patterns)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Issues](https://img.shields.io/github/issues/challgren/aircraft-patterns)](https://github.com/challgren/aircraft-patterns/issues)
