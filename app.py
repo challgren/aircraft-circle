@@ -2011,7 +2011,7 @@ class TAR1090Monitor:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.log_file = self.data_dir / "circle_detections.csv"
         self.grid_log_file = self.data_dir / "grid_detections.csv"
-        self.tar1090_base_url = "https://radar.hallgren.net/map"
+        self.tar1090_base_url = os.environ.get("TAR1090_URL")
         
         # Display settings
         self.terminal_size = shutil.get_terminal_size((80, 24))
@@ -2933,8 +2933,8 @@ class TAR1090Monitor:
 def main():
     parser = argparse.ArgumentParser(description='Monitor TAR1090 for aircraft performing circles')
     parser.add_argument('--server', '-s',
-                        default='http://fr24.hallgren.net:8080',
-                        help='TAR1090 server URL (default: http://fr24.hallgren.net:8080)')
+                        default=os.environ.get("TAR1090_URL"),
+                        help='TAR1090 server URL (default: value of TAR1090_URL env var)')
     parser.add_argument('--interval', '-i', type=int, default=5,
                         help='Update interval in seconds (default: 5)')
     parser.add_argument('--min-radius', type=float, default=0.5,
